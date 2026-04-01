@@ -1,14 +1,13 @@
 package duckcorp.factory;
 
 import duckcorp.duck.Duck;
+import duckcorp.duck.DuckType;
 import duckcorp.machine.Machine;
 import duckcorp.order.Order;
 import duckcorp.stats.ProductionStats;
 import duckcorp.stock.Stock;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * L'usine du joueur. Gère le budget, les machines, le stock et la réputation.
@@ -135,10 +134,33 @@ public class Factory {
      * @return true si la commande a été honorée, false sinon
      */
     public boolean fulfillOrder(Order order) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.fulfillOrder()");
-    }
+        int quantity = order.getQuantity();
 
+        if (this.stock.total() < quantity ){
+            return false;
+        }
+        // Trie par qualiter
+        List<Duck> allDucks = new ArrayList<>(stock.getAll());
+        allDucks.sort((d1, d2) -> Integer.compare(d1.getQualityScore(), d2.getQualityScore()));
+
+        List<Duck> expedier = new ArrayList<>();
+        double totalQuality = 0;
+        for ( int i=0 ; i<quantity; i++){
+            expedier.add(allDucks.get(i));
+            totalQuality += allDucks.get(i).getQualityScore();
+        }
+
+        double averageQuality = totalQuality / quantity;
+
+        if (averageQuality >= 70) {
+            this.reputation += 3;
+        } else if (averageQuality >= 50) {
+            this.reputation += 1;
+        }
+
+        order.fulfill();
+        return true;
+    }
     // --- TODO (Bonus 1) ---
 
     /**
