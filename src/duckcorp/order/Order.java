@@ -4,6 +4,8 @@ import duckcorp.duck.Duck;
 import duckcorp.duck.DuckType;
 import duckcorp.stock.Stock;
 
+import java.util.Map;
+
 /**
  * Commande client : demande un certain nombre de canards d'un type donné.
  *
@@ -67,8 +69,7 @@ public class Order {
      * Retourne la valeur totale de la commande (pricePerUnit * quantity).
      */
     public double getTotalValue() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Order.getTotalValue()");
+        return getQuantity()*getPricePerUnit();
     }
 
     /**
@@ -79,8 +80,9 @@ public class Order {
      * dont le type générique étend Duck, pas seulement Stock<Duck>.
      */
     public boolean canBeFulfilled(Stock<? extends Duck> stock) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Order.canBeFulfilled()");
+        if (stock==null) throw new IllegalArgumentException("Import de stock null");
+        Map<DuckType, Integer> count = stock.countByType();
+        return count.get(getDuckType()) > this.getQuantity();
     }
 
     /**
@@ -88,8 +90,7 @@ public class Order {
      * Appelée par Factory.fulfillOrder() après retrait du stock.
      */
     public void fulfill() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Order.fulfill()");
+        this.status = OrderStatus.FULFILLED;
     }
 
     /**
@@ -97,8 +98,11 @@ public class Order {
      */
     @Override
     public boolean equals(Object o) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Order.equals()");
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order c = (Order) o;
+        return id.equals(c.getId());
     }
 
     /**
@@ -106,8 +110,7 @@ public class Order {
      */
     @Override
     public int hashCode() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Order.hashCode()");
+        return id != null ? id.hashCode() : 0;
     }
 
     // --- toString fourni ---

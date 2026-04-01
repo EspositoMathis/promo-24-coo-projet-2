@@ -77,8 +77,12 @@ public class Factory {
      * @return true si l'achat a réussi, false si budget insuffisant
      */
     public boolean buyMachine(Machine machine) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.buyMachine()");
+        if (machine.getPurchaseCost() > this.budget){
+            return false;
+        }
+        this.budget -= machine.getPurchaseCost();
+        this.machines.add(machine);
+        return true;
     }
 
     /**
@@ -88,8 +92,12 @@ public class Factory {
      * @return true si la maintenance a réussi, false si budget insuffisant
      */
     public boolean maintainMachine(Machine machine) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.maintainMachine()");
+        if (machine.getMaintenanceCost() > this.budget){
+            return false;
+        }
+        this.budget -= machine.getMaintenanceCost();
+        machine.maintain();
+        return true;
     }
 
     /**
@@ -103,8 +111,13 @@ public class Factory {
      * @return la liste de tous les canards produits ce tour
      */
     public List<Duck> runProduction() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.runProduction()");
+        List<Duck> cree = new ArrayList<>();
+        for (Machine m : this.machines){
+            for (int i = 0; i < m.getCapacity(); i++){
+                cree.add(m.produceDuck());
+            }
+        }
+        return cree;
     }
 
     /**
