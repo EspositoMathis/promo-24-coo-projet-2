@@ -10,3 +10,4 @@ La class Machine contient des attribut ce qui est impossible de mettre dans une 
 canBeFulfilled(Stock stock) ne prend qu'un seul type et n'est pas flexible au sous classe coparer a canBeFulfilled(Stock<? extends Duck> stock) qui lui prend tout stock de Duck et ses sous class.
 
 ## Question ouverte
+L'attribut qui est privee dans la factoey sera donc modifiable par des methodes externe a la classe se qu'il faut eviter, cela aurait pour consequence de supprimer / modifier des machines par d'autre factory ou autre.
